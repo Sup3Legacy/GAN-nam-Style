@@ -1,0 +1,6 @@
+- R-VAE for supervised genre detection
+    - Input: raw spectrogram
+    - Ouput: reconstructed sample (spectrogram)
+    - Latent variable we hope to have: echonest's audiofeatures, genre, perhaps more
+    - Also: can map genre to a audiofeature/latent variable distribution
+- Using this network for style transfer by manipulating latent variables
