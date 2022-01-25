@@ -66,9 +66,8 @@ class MusicSet(Dataset):
         self.resample_2 = transforms.Resample(48000, self.SAMPLE_RATE).to(device)
         self.to_spectro = transforms.Spectrogram(n_fft=2048, hop_length=512,
                                                  normalized=True).to(device)
-        self.from_spectro = transforms.InverseSpectrogram(n_fft=2048,
-                                                          hop_length=512,
-                                                          normalized=True).to(device)
+        self.from_spectro = transforms.GriffinLim(n_fft=2048,
+                                                  hop_length=512).to(device)
 
     def __len__(self):
         return len(self.ids)
@@ -79,7 +78,7 @@ class MusicSet(Dataset):
         # data_path = os.path.splitext(file_audio)[0] + self.path_extension
         music, sr = torchaudio.load(file_audio)
         music = music.to(device)
-        music = torch.mean(music, dim=0)
+        music = torch.mean(music, dim=0)  # from stereo to mono
         if sr == 44100:
             music = self.resample_1(music)
         elif sr == 48000:
